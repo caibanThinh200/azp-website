@@ -8,7 +8,6 @@ import { bindActionCreators } from "redux";
 import categoryThunk from "../../thunk/categoryThunk";
 import { connect } from "react-redux"
 import { useEffect, useRef, useState } from "react";
-import LazyLoad from "react-lazyload";
 import { onLoadErrorImage } from "../../Util/function";
 import queryString from "query-string";
 import { useOutletContext } from "react-router-dom";
