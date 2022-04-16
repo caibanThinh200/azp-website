@@ -1,0 +1,51 @@
+@import "__variables.scss";
+
+* {
+    // font-weight: 500;
+    font-family: 'Baloo Bhaijaan 2', cursive;
+    // transition: all 0.25s ease-in-out;
+}
+
+svg, text {
+    vertical-align: middle !important;
+    display: inline-block !important;
+}
+
+body {
+    padding: 0 !important;
+}
+
+html {
+    overflow: initial !important;
+    height: 100%;
+    min-height: 800px;
+}
+
+button {
+    text-transform: none !important;
+}
+
+body, #root {
+    height: 100%;
+}
+
+.loading-custom {
+    ._loading_overlay_content {
+        margin-top: 25%;
+    }
+}
+
+li {
+    list-style: none;
+}
+
+@include screen-xxl {
+    html ::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+.ant-menu .ant-menu-dark .ant-layout-header {
+    background: $primary_theme !important;
+}
+

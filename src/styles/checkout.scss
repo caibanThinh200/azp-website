@@ -1,0 +1,179 @@
+@import "./_variables.scss";
+
+.furniture_checkout {
+    &__cart {
+        &__divider {
+            // border: 1px dashed rgb(82, 76, 76);
+            &--title {
+                border: 1px solid rgb(82, 76, 76);
+            }
+        }
+        &__item {
+            height: 300px;
+            transition: 0.2s all ease-out;
+            img {
+                object-fit: cover;
+            }
+            &__title {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: -webkit-box;
+                -webkit-line-clamp: 1; /* number of lines to show */
+                line-clamp: 1;
+                -webkit-box-orient: vertical;
+            }
+            &__price {
+                color: yellowgreen;
+            }
+            &__quantity-input {
+                vertical-align: super;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+                border-radius: 3px;
+                &__modify {
+                    user-select: none;
+                    outline: none;
+                    padding: 0.01rem;
+                    width: 3rem;
+                    font-size: 1.5rem;
+                    background: #f3f3f3;
+                    color: #888;
+                    border: 0 solid #dbdbdb;
+                    text-align: center;
+                    text-shadow: 0 1px 0 rgba(#fff, 0.6);
+                    border-radius: 3px 0 0 3px;
+                    cursor: pointer;
+                    &:hover {
+                        background: darken(#f3f3f3, 10%);
+                        color: darken(#888, 20%);
+                    }
+                }
+                &__screen {
+                    user-select: none;
+                    outline: none;
+                    width: 4rem;
+                    padding: 0.05rem;
+                    font-size: 1.5rem;
+                    background: #fafafaf3;
+                    border: 0;
+                    border-top: 3px;
+                    border-bottom: 3px;
+                    text-align: center;
+                }
+            }
+        }
+    }
+    &__order {
+        background-color: #f1f1f1;
+        span {
+            word-wrap: break-word;
+        }
+    }
+}
+
+@include screen-medium {
+    .furniture_checkout {
+        &__cart {
+            &__item {
+                // img {
+                //     height: 50% !important;
+                // }
+                &__quantity-input {
+                    position: absolute;
+                    bottom: 15%;
+                    right: 20%;
+                }
+            }
+        }
+    }
+}
+
+@include screen-medium {
+    .furniture_checkout {
+        &__payment {
+            &__revenue {
+                width: 100% !important;
+            }
+        }
+    }
+}
+
+@include screen-small {
+    .furniture_checkout {
+        &__payment {
+            &__contact {
+                text-align: center;
+            }
+            &__revenue {
+                width: 100% !important;
+            }
+        }
+        &__cart {
+            &__item {
+                height: auto;
+                img {
+                    max-height: 500px;
+                    max-width: 300px;
+                }
+                height: auto;
+                &__quantity-input {
+                    position: absolute;
+                    bottom: 10%;
+                    right: 20%;
+                    &__modify {
+                        width: 2rem;
+                    }
+                    &__screen {
+                        width: 3rem;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@include screen-x-small {
+    .furniture_checkout {
+        &__payment {
+            &__contact {
+                text-align: center;
+            }
+            &__revenue {
+                width: 100% !important;
+            }
+        }
+        &__cart {
+            &__item {
+                height: auto;
+                img {
+                    max-height: 500px;
+                    max-width: 300px;
+                }
+                height: auto;
+                &__quantity-input {
+                    position: absolute;
+                    bottom: 10%;
+                    right: 20%;
+                    &__modify {
+                        width: 2rem;
+                    }
+                    &__screen {
+                        width: 3rem;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@include screen-lg {
+    .furniture_checkout {
+        &__payment {
+            &__revenue {
+                width: 100% !important;
+            }
+        }
+    }
+}

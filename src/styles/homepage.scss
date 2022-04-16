@@ -1,0 +1,297 @@
+@import "./__variables.scss";
+
+.furniture_homepage {
+    &--fadeIn {
+        opacity: 0;
+        transform: translate(0, -30%);
+        transition: width 0.5s 0.5s, height 0.5s 0.5s, opacity 0.5s;
+    }
+    &--fadeOut {
+        opacity: 1;
+        transform: translate(0, 0);
+        transition: width 0.5s 0.5s, height 0.5s 0.5s, opacity 0.5s;
+    }
+    &__introduce {
+        position: relative;
+        opacity: 0;
+        animation: introduce 1s forwards;
+        animation-delay: 0s;
+    }
+    &__category {
+        position: relative;
+        animation-delay: 1s;
+        padding-left: 50px;
+        padding-right: 50px;
+        margin-top: 125px;
+        &__item {
+            opacity: 0;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 200px;
+            height: 200px;
+            max-width: 90%;
+            margin: 3px;
+            margin-left: 20px;
+            overflow: hidden;
+            // padding-left: 10px;
+            // padding-right: 10px;
+            &--open {
+                animation: categoryItemFadeIn 1s forwards;
+                animation-delay: var(--time);
+            }
+            &--close {
+                animation: categoryItemFadeOut 1s forwards;
+                animation-delay: var(--time);
+            }
+        }
+        &__item:hover > .furniture_mansonry__thumb {
+            border-radius: 10px;
+            transform: scale(1.5);
+        }
+        &__title {
+            position: absolute;
+            z-index: 1;
+            color: $light;
+            margin-top: 30%;
+            width: 100%;
+            // left: 10%;
+        }
+    }
+    &__product-type {
+        position: relative;
+        animation-delay: 1s;
+        padding-left: 50px;
+        padding-right: 50px;
+        margin-top: 125px;
+        &__item {
+            border-radius: 10px;
+            cursor: pointer;
+            width: 200px;
+            position: relative;
+            height: 200px;
+            max-width: 90%;
+            margin: 3px;
+            overflow: hidden;
+            opacity: 0;
+            &--open {
+                animation: categoryItemFadeIn 1s forwards;
+                animation-delay: var(--time-2);
+            }
+            &--close {
+                animation: categoryItemFadeOut 1s forwards;
+                animation-delay: var(--time-2);
+            }
+        }
+        &__item:hover > .furniture_mansonry__thumb {
+            border-radius: 10px;
+            transform: scale(1.5);
+        }
+        &__title {
+            position: absolute;
+            color: $light;
+            z-index: 1;
+            margin-top: 30%;
+            margin-left: auto;
+            margin-right: auto;
+            width: 100%;
+        }
+    }
+
+    &__title {
+        color: $greenLeaf;
+        &--sub {
+            color: gray;
+        }
+        &--category {
+            color: $greenLeaf;
+            &--open {
+                animation: categoryFadeIn 1s forwards;
+            }
+            &--close {
+                animation: categoryFadeOut 1s forwards;
+            }
+        }
+        &--product-type {
+            color: $greenLeaf;
+            opacity: 0;
+            animation-delay: 0s !important;
+            &--open {
+                animation: productTypeFadeIn 1s forwards;
+            }
+            &--close {
+                animation: productTypeFadeOut 1s forwards;
+            }
+        }
+    }
+    &__main-thumb {
+        width: 300px;
+        height: 300px;
+    }
+}
+
+@keyframes introduce {
+    from {
+        opacity: 0;
+        left: -100px;
+    }
+    to {
+        opacity: 1;
+        left: 0px;
+    }
+}
+
+@keyframes categoryFadeIn {
+    from {
+        opacity: 0;
+        transform: translate(0, -80%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(0, 0);
+    }
+}
+
+@keyframes categoryFadeOut {
+    from {
+        opacity: 1;
+        transform: translate(0, 0);
+    }
+    to {
+        opacity: 0;
+        transform: translate(0, -80%);
+    }
+}
+
+@keyframes categoryItemFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        // transform: translateY(0px);
+    }
+}
+
+@keyframes categoryItemFadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-50px);
+        position: absolute;
+    }
+}
+
+@keyframes productTypeFadeIn {
+    from {
+        opacity: 0;
+        transform: translate(0, -80%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(0, 0);
+    }
+}
+
+@keyframes productTypeFadeOut {
+    from {
+        opacity: 1;
+        transform: translate(0, 0);
+    }
+    to {
+        opacity: 0;
+        transform: translate(0, -80%);
+    }
+}
+
+@keyframes productTypeItemFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        // transform: translateY(0px);
+    }
+}
+
+@keyframes productTypeItemFadeOut {
+    from {
+        opacity: 1;
+        // transform: translateY(0px);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+}
+
+@include screen-x-small {
+    .furniture_homepage {
+        &__introduce {
+            &--text {
+                padding: 0 !important;
+            }
+        }
+        &__category {
+            padding: 0;
+            margin-top: 50px;
+            &__title {
+                margin: 0;
+                top: 40%;
+                left: 0%;
+            }
+        }
+        &__product-type {
+            padding: 0;
+            margin-top: 50px;
+            height: 100%;
+            &__title {
+                margin: 0;
+                top: 40%;
+                left: 0;
+            }
+            &__item {
+                // max-width: 120px;
+                text-align: center;
+            }
+        }
+    }
+}
+
+@include screen-medium {
+    .furniture_homepage {
+        &__introduce {
+            &--text {
+                padding: 0 !important;
+            }
+        }
+        &__category {
+            margin-top: 50px;
+            &__title {
+                margin: 0;
+                top: 40%;
+            }
+            &__item {
+                max-width: 75%;
+                text-align: center;
+            }
+        }
+        &__product-type {
+            margin-top: 50px;
+            &__title {
+                margin: 0;
+                top: 40%;
+            }
+            &__item {
+                padding-left: 20px;
+                padding-right: 20px;
+                max-width: 75%;
+                text-align: center;
+            }
+        }
+    }
+}

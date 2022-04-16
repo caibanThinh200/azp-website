@@ -1,0 +1,10 @@
+@import "../__variables.scss";
+
+.furniture_data-table {
+    &__wrapper {
+        width: 90%;
+    }
+    &__footer {
+        overflow: hidden;
+    }
+}

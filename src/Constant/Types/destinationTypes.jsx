@@ -1,0 +1,25 @@
+const provinceTypes = {
+    GET_LIST_PROVINCE_ACTION: "GET_LIST_PROVINCE_ACTION",
+    GET_LIST_PROVINCE_SUCCESS: "GET_LIST_PROVINCE_SUCCESS",
+    GET_LIST_PROVINCE_FAILED: "GET_LIST_PROVINCE_FAILED",
+}
+
+const districtTypes = {
+    GET_LIST_DISTRICT_ACTION: "GET_LIST_DISTRICT_ACTION",
+    GET_LIST_DISTRICT_SUCCESS: "GET_LIST_DISTRICT_SUCCESS",
+    GET_LIST_DISTRICT_FAILED: "GET_LIST_DISTRICT_FAILED",
+}
+
+const wardTypes = {
+    GET_LIST_WARD_ACTION: "GET_LIST_WARD_ACTION",
+    GET_LIST_WARD_SUCCESS: "GET_LIST_WARD_SUCCESS",
+    GET_LIST_WARD_FAILED: "GET_LIST_WARD_FAILED",
+}
+
+const destinationTypes = {
+    ...provinceTypes,
+    ...districtTypes,
+    ...wardTypes
+}
+
+export default destinationTypes;

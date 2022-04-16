@@ -1,0 +1,47 @@
+$light: rgb(255, 255, 255);
+$dark: rgba(0, 0, 0, 0.952);
+$wood: rgb(222, 184, 135);
+$ocean: #33ffe2;
+$greenWood: #0b7644;
+$greenLeaf: #8bd16d;
+$price: rgb(165, 42, 42);
+$discount: rgb(211, 221, 72);
+$title: rgb(247, 95, 95);
+$border: #f0f0f0;
+$primary_theme: #9ad88e;
+
+@mixin screen-x-small {
+    @media (max-width: 576px) {
+        @content;
+    }
+}
+
+@mixin screen-small {
+    @media (min-width: 576px) and (max-width: 768px) {
+        @content;
+    }
+}
+
+@mixin screen-medium {
+    @media (min-width: 768px) and (max-width: 992px) {
+        @content;
+    }
+}
+
+@mixin screen-lg {
+    @media (min-width: 992px) and (max-width: 1200px) {
+        @content;
+    }
+}
+
+@mixin screen-xl {
+    @media (min-width: 1200px) and (max-width: 1400px) {
+        @content;
+    }
+}
+
+@mixin screen-xxl {
+    @media (min-width: 1400px) {
+        @content;
+    }
+}

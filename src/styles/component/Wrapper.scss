@@ -1,0 +1,19 @@
+@import "../__variables.scss";
+
+.furniture-wrapper {
+    background-color: $light;
+    height: auto;
+    &--hover:hover {
+        box-shadow: 3px 2px 10px 2px #bfbfbf;
+        transition: all 0.5s;
+    }
+    &--shadow {
+        box-shadow: 3px 2px 10px 2px #bfbfbf;
+    }
+    &--radius {
+        border-radius: 5px;
+    }
+    &--bordered {
+        border: solid $border 2px;
+    }
+}

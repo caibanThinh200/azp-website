@@ -1,0 +1,7 @@
+const UploadType = {
+    UPLOAD_FILE_ACTION: "UPLOAD_FILE_ACTION",
+    UPLOAD_FILE_SUCCESS: "UPLOAD_FILE_SUCCESS",
+    UPLOAD_FILE_FAILED: "UPLOAD_FILE_FAILED"
+}
+
+export default UploadType;

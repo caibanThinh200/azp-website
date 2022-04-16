@@ -1,0 +1,42 @@
+@import "./_variables.scss";
+
+.furniture_navigation {
+    min-height: 100vh !important;
+    &__item {
+        color: black;
+    }
+    &__contact {
+        background-color: #50ab0ba3;
+    }
+    &__sub-item {
+        // .MuiCollapse-root {
+        //     max-height: 50px;
+        // }
+    }
+    &__logo {
+        max-width: 100px;
+        transform: translate(0, 20%);
+    }
+    &__wrapper {
+        // background-color: $primary_theme !important;
+        &__space {
+            // gap: 25% !important;
+        }
+        height: 70px;
+        &__mobile {
+            &--icon {
+                font-size: 50px;
+                margin-top: 10px;
+            }
+        }
+    }
+    &__content {
+        min-height: 280px;
+        background-color: $light !important;
+    }
+    &__nav-list {
+        a:hover {
+            background-color: $border;
+        }
+    }
+}
