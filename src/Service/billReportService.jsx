@@ -3,10 +3,11 @@ import BillResponse from "../Mapping/Response/billResponse";
 import ApiService from "../Util/ApiService"
 import Urls from "../Util/Urls"
 import DashboardResponse from '../Mapping/Response/dashboardResponse';
+import currentConfig from "../Constant/env";
 
 export const getListService = (params) => {
     return new ApiService({
-        baseURL: process.env.REACT_APP_FURNITURE_HOST || "",
+        baseURL: currentConfig.API_URL || "",
         endpoint: Urls.BILL_REPORT.getList,
         params: params,
         parser: parseData
@@ -15,7 +16,7 @@ export const getListService = (params) => {
 
 export const getDetailService = (id) => {
     return new ApiService({
-        baseURL: process.env.REACT_APP_FURNITURE_HOST || "",
+        baseURL: currentConfig.API_URL || "",
         endpoint: Urls.BILL_REPORT.detail,
         endpointParams: {id},
         parser: parseItem
@@ -24,7 +25,7 @@ export const getDetailService = (id) => {
 
 export const updateService = (data) => {
     return new ApiService({
-        baseURL: process.env.REACT_APP_FURNITURE_HOST || "",
+        baseURL: currentConfig.API_URL || "",
         endpoint: Urls.BILL_REPORT.update,
         endpointParams: {id: data.id},
     }).put(data);
@@ -32,7 +33,7 @@ export const updateService = (data) => {
 
 export const getRevenueService = () => {
     return new ApiService({
-        baseURL: process.env.REACT_APP_FURNITURE_HOST || "",
+        baseURL: currentConfig.API_URL || "",
         endpoint: Urls.BILL_REPORT.revenue,
         parser: res => ({...res, result: new DashboardResponse(res.result)})
     }).get()

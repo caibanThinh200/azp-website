@@ -2,10 +2,11 @@ import CategoryResponse from '../Mapping/Response/categoryResponse';
 import ApiService from '../Util/ApiService';
 import ApiResponse from '../Mapping/ApiResponse';
 import Urls from '../Util/Urls';
+import currentConfig from '../Constant/env';
 
 export const getListService = () => {
     return new ApiService({
-        baseURL: process.env.REACT_APP_FURNITURE_HOST || "",
+        baseURL: currentConfig.API_URL || "",
         endpoint: Urls.CATEGORY.getList,
         parser: parseData
     }).get()
@@ -13,7 +14,7 @@ export const getListService = () => {
 
 export const getListAllService = () => {
     return new ApiService({
-        baseURL: process.env.REACT_APP_FURNITURE_HOST || "",
+        baseURL: currentConfig.API_URL || "",
         endpoint: Urls.CATEGORY.all,
         parser: parseData
     }).get()
@@ -21,14 +22,14 @@ export const getListAllService = () => {
 
 export const createService = data => {
     return new ApiService({
-        baseURL: process.env.REACT_APP_FURNITURE_HOST || "",
+        baseURL: currentConfig.API_URL || "",
         endpoint: Urls.CATEGORY.create,
     }).post(data);
 }
 
 export const getDetailService = id => {
     return new ApiService({
-        baseURL: process.env.REACT_APP_FURNITURE_HOST || "",
+        baseURL: currentConfig.API_URL || "",
         endpoint: Urls.CATEGORY.getDetail,
         endpointParams: {id},
         parser: parseItem
@@ -37,7 +38,7 @@ export const getDetailService = id => {
 
 export const updateService = (id, data) => {
     return new ApiService({
-        baseURL: process.env.REACT_APP_FURNITURE_HOST || "",
+        baseURL: currentConfig.API_URL || "",
         endpoint: Urls.CATEGORY.update,
         endpointParams: {id},
     }).put(data);

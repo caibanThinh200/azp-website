@@ -2,10 +2,11 @@ import ApiService from '../Util/ApiService';
 import Urls from '../Util/Urls';
 import ApiResponse from '../Mapping/ApiResponse';
 import DiscountResponse from '../Mapping/Response/discountResponse';
+import currentConfig from '../Constant/env';
 
 export const getListService = (params) => {
     return new ApiService({
-        baseURL: process.env.REACT_APP_FURNITURE_HOST || "",
+        baseURL: currentConfig.API_URL || "",
         endpoint: Urls.DISCOUNT.getList,
         params: params,
         parser: parseData
@@ -14,7 +15,7 @@ export const getListService = (params) => {
 
 export const getListAllService = () => {
     return new ApiService({
-        baseURL: process.env.REACT_APP_FURNITURE_HOST || "",
+        baseURL: currentConfig.API_URL || "",
         endpoint: Urls.DISCOUNT.all,
         parser: parseData
     }).get();
@@ -22,14 +23,14 @@ export const getListAllService = () => {
 
 export const createService = data => {
     return new ApiService({
-        baseURL: process.env.REACT_APP_FURNITURE_HOST || "",
+        baseURL: currentConfig.API_URL || "",
         endpoint: Urls.DISCOUNT.create,
     }).post(data);
 }
 
 export const updateService = (id, data) => {
     return new ApiService({
-        baseURL: process.env.REACT_APP_FURNITURE_HOST || "",
+        baseURL: currentConfig.API_URL || "",
         endpoint: Urls.DISCOUNT.update,
         endpointParams: {id},
     }).put(data);
@@ -37,7 +38,7 @@ export const updateService = (id, data) => {
 
 export const getDetailService = id => {
     return new ApiService({
-        baseURL: process.env.REACT_APP_FURNITURE_HOST || "",
+        baseURL: currentConfig.API_URL || "",
         endpoint: Urls.DISCOUNT.getDetail,
         endpointParams: {id},
         parser: parseItem
@@ -46,7 +47,7 @@ export const getDetailService = id => {
 
 // export const getDetailService = (id: string) => {
 //     return new ApiService({
-//         baseURL: process.env.REACT_APP_FURNITURE_HOST || "",
+//         baseURL: currentConfig.API_URL || "",
 //         endpoint: Urls.PRODUCT.getDetail,
 //         endpointParams: {id},
 //         parser: (data: ResponseInterface) => ({...data, result: new ProductResponse(data?.result)})

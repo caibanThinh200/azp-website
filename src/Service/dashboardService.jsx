@@ -1,10 +1,11 @@
+import currentConfig from "../Constant/env";
 import DashboardResponse from "../Mapping/Response/dashboardResponse";
 import ApiService from "../Util/ApiService";
 import Urls from "../Util/Urls";
 
 export const getRevenueService = () => {
     return new ApiService({
-        baseURL: process.env.REACT_APP_FURNITURE_HOST || "",
+        baseURL: currentConfig.API_URL || "",
         endpoint: Urls.GENERAL.revenue,
         parser: parseRevenue
     }).get();
@@ -12,7 +13,7 @@ export const getRevenueService = () => {
 
 export const getMonthRevenueService = () => {
     return new ApiService({
-        baseURL: process.env.REACT_APP_FURNITURE_HOST || "",
+        baseURL: currentConfig.API_URL || "",
         endpoint: Urls.GENERAL.monthRevenue,
         parser: parseMonthRevenue
     }).get();

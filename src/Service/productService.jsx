@@ -17,7 +17,7 @@ export const getListService = (params) => {
 
 export const getInitService = () => {
     return new ApiService({
-        baseURL: process.env.REACT_APP_FURNITURE_HOST || "",
+        baseURL: currentConfig.API_URL || "",
         endpoint: Urls.PRODUCT.init,
         parser: parseItem
     }).get();
@@ -25,7 +25,7 @@ export const getInitService = () => {
 
 export const getDetailService = (slug) => {
     return new ApiService({
-        baseURL: process.env.REACT_APP_FURNITURE_DEV_HOST || "",
+        baseURL: currentConfig.API_URL || "",
         endpoint: Urls.PRODUCT.getDetail,
         endpointParams: {slug},
         parser: parseItem
@@ -34,14 +34,14 @@ export const getDetailService = (slug) => {
 
 export const createService = (data) => {
     return new ApiService({
-        baseURL: process.env.REACT_APP_FURNITURE_HOST || "",
+        baseURL: currentConfig.API_URL || "",
         endpoint: Urls.PRODUCT.create,
     }).post(data);
 }
 
 export const updateService = (id, data) => {
     return new ApiService({
-        baseURL: process.env.REACT_APP_FURNITURE_HOST || "",
+        baseURL: currentConfig.API_URL || "",
         endpointParams: {id},
         endpoint: Urls.PRODUCT.update
     }).put(data);

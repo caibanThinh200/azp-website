@@ -113,7 +113,7 @@ const List = props => {
             props.getList(queryParams);
         }
     }, [routeProps.location]);
-    console.log(product.isFetching, props.products.isProductFetching)
+    // console.log(product.isFetching, props.products.isProductFetching)
     useEffect(() => {
         if (props.products.result.length > 0) {
             const typeIds = (props.products.result || []).map(item => item.product_type);

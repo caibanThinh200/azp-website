@@ -3,11 +3,12 @@ import Urls from '../Util/Urls';
 import ApiResponse from '../Mapping/ApiResponse';
 import ProductTypeResponse from '../Mapping/Response/productTypeResponse';
 import { omit } from 'lodash';
+import currentConfig from '../Constant/env';
 
 
 export const getListService = (params) => {
     return new ApiService({
-        baseURL: process.env.REACT_APP_FURNITURE_HOST || "",
+        baseURL: currentConfig.API_URL || "",
         endpoint: Urls.PRODUCT_TYPE.getList,
         params: params,
         parser: parseData
@@ -16,7 +17,7 @@ export const getListService = (params) => {
 
 export const getListAllService = () => {
     return new ApiService({
-        baseURL: process.env.REACT_APP_FURNITURE_HOST || "",
+        baseURL: currentConfig.API_URL || "",
         endpoint: Urls.PRODUCT_TYPE.all,
         parser: parseData
     }).get();
@@ -24,7 +25,7 @@ export const getListAllService = () => {
 
 export const getCountService = () => {
     return new ApiService({
-        baseURL: process.env.REACT_APP_FURNITURE_HOST || "",
+        baseURL: currentConfig.API_URL || "",
         endpoint: Urls.PRODUCT_TYPE.getCount,
         parser: (res) => omit({ ...res, item: new ProductTypeResponse(res.result) }, ["result"])
     }).get();
@@ -32,7 +33,7 @@ export const getCountService = () => {
 
 export const createService = (data) => {
     return new ApiService({
-        baseURL: process.env.REACT_APP_FURNITURE_HOST || "",
+        baseURL: currentConfig.API_URL || "",
         endpoint: Urls.PRODUCT_TYPE.create,
         parser: (res) => res
     }).post(data)
@@ -40,7 +41,7 @@ export const createService = (data) => {
 
 export const getDetailService = (id) => {
     return new ApiService({
-        baseURL: process.env.REACT_APP_FURNITURE_HOST || "",
+        baseURL: currentConfig.API_URL || "",
         endpoint: Urls.PRODUCT_TYPE.getDetail,
         endpointParams: { id },
         parser: (data) => ({ ...data, result: new ProductTypeResponse(data?.result) })
@@ -49,7 +50,7 @@ export const getDetailService = (id) => {
 
 export const updateService = (id, data) => {
     return new ApiService({
-        baseURL: process.env.REACT_APP_FURNITURE_HOST || "",
+        baseURL: currentConfig.API_URL || "",
         endpoint: Urls.PRODUCT_TYPE.update,
         endpointParams: { id },
     }).put(data)

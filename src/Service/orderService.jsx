@@ -4,7 +4,7 @@ import Urls from "../Util/Urls";
 import OrderResponse from "../Mapping/Response/orderResponse";
 
 export const checkoutOrderService = data => {
-    console.log(currentConfig.API_URL)
+    // console.log(currentConfig.API_URL)
     return new ApiService({
         baseURL: currentConfig.API_URL,
         endpoint: Urls.ORDER.checkoutOrder,
