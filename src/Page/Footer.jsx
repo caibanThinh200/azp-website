@@ -5,7 +5,7 @@ import React from 'react'
 
 const Footer = props => {
     return (
-        <Wrapper style={{ backgroundColor: "black" }} className={clsx("furniture_footer__wrapper w-100 p-5 ", props.className)}>
+        <Wrapper style={{ backgroundColor: "#8bd16d" }} className={clsx("furniture_footer__wrapper w-100 p-5 ", props.className)}>
             <Wrapper className="row footer">
                 <Wrapper className="col-12 col-md-4">
                     <div className="furniture_footer__about">
@@ -48,7 +48,7 @@ const Footer = props => {
                         <h6>Nhập email để đăng ký nhận các thông báo về ưu đãi của cửa hàng</h6>
                         <div className="d-flex">
                             <Input />
-                            <button>Đăng ký</button>
+                            <button style={{background: "#189564"}}>Đăng ký</button>
                         </div>
                     </div>
                     <div>

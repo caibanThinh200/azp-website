@@ -27,6 +27,10 @@
     font-size: 25px;
 }
 
+.fs-18 {
+    font-size: 18px;
+}
+
 .pt-15 {
     padding-top: 15px;
 }
@@ -59,4 +63,10 @@
 
 .image_cover {
     object-fit: cover;
+}
+
+.center-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

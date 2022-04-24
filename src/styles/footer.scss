@@ -13,7 +13,7 @@
     &__about{
          p{
             width: 85%;
-            color: silver;
+            color: $light;
         }
     }
     &__subcribe{
@@ -21,7 +21,7 @@
         button{
             width: 100px;
             border-style: none;
-            background-color: #262626;
+            background-color: #8bd16d;
             color: $light;
             height: 38px;
         }
@@ -32,7 +32,7 @@
     }
     &__end{
         border-top: 1px solid white;
-        background-color: black;
+        background-color: #8bd16d;
         margin-top: 20px;
         padding-top: 20px;
         p{
@@ -48,7 +48,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #434343;
+            background-color: #161f12;
             height: 35px;
             width: 35px;
             border-radius: 4px;

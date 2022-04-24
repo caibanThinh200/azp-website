@@ -30,7 +30,7 @@
             border: 10px;
             color: $light;
             &--add-to-cart {
-                background: $title;
+                background: #5faaf7;
             }
             &--payment {
                 background: rgb(52, 155, 52);
@@ -102,10 +102,10 @@
         &__item {
             height: 400px;
             margin-right: 20px;
-            width: 95% !important;
+            width: 200px !important;
             max-width: 300px !important;
             img {
-                height: 50%;
+                height: 40%;
                 max-height: 400px;
                 width: 100%;
                 object-fit: contain;

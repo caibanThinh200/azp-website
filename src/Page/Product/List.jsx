@@ -1,12 +1,12 @@
 import Wrapper from "../../Component/Wrapper";
-import { Button, Divider, Drawer, List as AntList, message, Pagination, Select, Tag } from "antd";
+import { Badge, Button, Divider, Drawer, List as AntList, message, Pagination, Select, Tag } from "antd";
 import { checkLoadedImage, onLoadErrorImage } from "../../Util/function";
 import Icon from "../../Component/Icon";
 import { TwitterPicker } from 'react-color'
 import ProductThunk from "../../thunk/productThunk";
 import ProductTypeThunk from "../../thunk/productTypeThunk";
 import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import queryString from "query-string";
@@ -14,11 +14,13 @@ import { find, get } from "lodash";
 import FilterOptions from "../../Component/Filter";
 import slugify from "slugify";
 import INFO_DEFINE from "../../Constant/infoDefine";
+import shoppingCartAction from "../../action/shoppingCartAction";
 
 const Item = props => {
     const routeProps = useOutletContext();
-
+    
     return <AntList.Item>
+        <Badge.Ribbon text={`${props?.discount_value}%`}>
         <Wrapper
             radius
             shadow
@@ -43,10 +45,10 @@ const Item = props => {
                 {props.discount_value}
             </Wrapper>}
             <img src={props.main_thumb[0]?.url} onError={onLoadErrorImage} className="furniture_product__item__thumb" />
-            <Wrapper className={"p-4 mt-lg-4 pt-0 text-center"}>
+            <Wrapper className={"p-4 pb-1 mt-lg-4 pt-0 text-center item-content"}>
                 <p className="h6 word-wrap furniture_product__item__title mb-4">{props.name}</p>
                 <p className="h6 fw-bold text-decoration-line-through">{props.price} VND</p>
-                <p className="h4 fw-bold furniture_product__item__price--discount">{props.discount_price} VND</p>
+                <p className="h4 fw-bold furniture_product__item__price--discount mb-0">{props.discount_price} VND</p>
             </Wrapper>
             <Wrapper
                 style={{
@@ -54,27 +56,29 @@ const Item = props => {
                     left: "0",
                     right: "0"
                 }}
-                className="d-block d-lg-none position-absolute"
+                className="d-block d-lg-none"
             >
-                <Wrapper className="justify-content-around d-flex">
+                <Wrapper className="">
+                <Button
+                        type="link"
+                        onClick={() => routeProps.navigate("/san-pham/" + props?.slug)}
+                        size="large"
+                        className="w-100"
+                    >
+                        Xem chi tiết
+                    </Button>
                     <Button
                         onClick={props.handleAddToCart}
                         type="primary"
                         size="large"
-                        className="w-75"
+                        className="w-100"
                     >
                         Thêm vào giỏ
-                    </Button>
-                    <Button
-                        onClick={() => routeProps.navigate("/san-pham/" + props?.slug)}
-                        size="large"
-                        className="w-75"
-                    >
-                        Xem chi tiết
                     </Button>
                 </Wrapper>
             </Wrapper>
         </Wrapper>
+        </Badge.Ribbon>
     </AntList.Item>
 }
 
@@ -88,6 +92,7 @@ const RowItem = props => {
 const List = props => {
     const routeProps = useOutletContext(),
         cartList = JSON.parse(localStorage.getItem(INFO_DEFINE.KEY.cart)) || [],
+        dispatch = useDispatch(),
         [product, setProduct] = useState({
             isFetching: false,
             result: [],
@@ -183,11 +188,9 @@ const List = props => {
         if (cartList.length > 0 && Object.keys(existProduct || {}).length > 0) {
             message.error("Sản phẩm đã có trong giỏ hàng");
             return
-        } else {
-            currentCart.push(currentItem);
-        }
-        localStorage.setItem(INFO_DEFINE.KEY.cart, JSON.stringify(currentCart));
-        message.success(`Sản phẩm ${item?.code} đã được thêm vào giỏ hàng`)
+        } 
+        dispatch(shoppingCartAction.addAction(currentItem));
+        // message.success(`Sản phẩm ${item?.code} đã được thêm vào giỏ hàng`)
     }
 
     const pagination = {
@@ -196,8 +199,8 @@ const List = props => {
         pageSize: props.products.page_size
     }
 
-    return <Wrapper className={"row mt-5"}>
-        <Wrapper className={"col-12 mb-5 row p-4 pb-5 furniture_product__sort gy-0"}>
+    return <Wrapper className={"row"}>
+        <Wrapper className={"col-12 row p-4 pb-5 pt-0 furniture_product__sort gy-0"}>
             <p className="h3 mb-4">
                 <Icon type="sort" /> Sắp xếp
             </p>
@@ -212,7 +215,7 @@ const List = props => {
                 <Select.Option value={2}>Cũ nhất</Select.Option>
             </Select>
         </Wrapper>
-        <Wrapper className="d-block d-lg-none mb-5 p-4 pt-0">
+        <Wrapper className="d-block d-lg-none p-4 pt-0">
             <Button icon={<Icon type="filter-outlined" />} type="primary" onClick={() => setFilterPopup(!filterPopup)}>
                 <span className="h6">Bộ lọc</span>
             </Button>
@@ -276,7 +279,7 @@ const List = props => {
         <Wrapper className={"col ms-2 ms-lg-5 furniture_product__list"}>
             <AntList
                 loading={product.isFetching}
-                grid={{ gutter: 30, xs: 1, sm: 2, md: 2, lg: 2, column: 3 }}
+                grid={{ gutter: 10, xs: 2, sm: 3, md: 3, lg: 3, column: 4 }}
                 dataSource={product.result}
                 renderItem={item => <Item {...item}
                     handleAddToCart={() => handleAddToCart(item)}

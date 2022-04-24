@@ -32,7 +32,8 @@ import {
     BarsOutlined,
     ArrowDownOutlined,
     SortDescendingOutlined,
-    CreditCardOutlined
+    CreditCardOutlined,
+    DownOutlined
 } from "@ant-design/icons";
 import { omit } from 'lodash';
 
@@ -206,6 +207,11 @@ export default class Icon extends Component {
                 return (
                     <CreditCardOutlined {...props}
                         className={`${className || ''} furniture_icon`}>{this.props.children}</CreditCardOutlined>
+                );
+            case "down-arrow":
+                return (
+                    <DownOutlined {...props}
+                        className={`${className || ''} furniture_icon`}>{this.props.children}</DownOutlined>
                 );
             default:
                 return "";

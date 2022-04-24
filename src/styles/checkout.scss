@@ -9,10 +9,10 @@
             }
         }
         &__item {
-            height: 300px;
+            height: 250px;
             transition: 0.2s all ease-out;
             img {
-                object-fit: cover;
+                object-fit: contain;
             }
             &__title {
                 overflow: hidden;
@@ -153,7 +153,7 @@
                 }
                 height: auto;
                 &__quantity-input {
-                    position: absolute;
+                    position: static;
                     bottom: 10%;
                     right: 20%;
                     &__modify {
@@ -162,6 +162,68 @@
                     &__screen {
                         width: 3rem;
                     }
+                }
+            }
+        }
+    }
+}
+
+@include screen-lg {
+    .furniture_checkout {
+        &__cart {
+            &__item {
+                &__quantity-input {
+                    position: static;
+                    bottom: 10%;
+                    right: 20%;
+                    &__modify {
+                        width: 2rem;
+                    }
+                    &__screen {
+                        width: 3rem;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@include screen-medium {
+    .furniture_checkout {
+        &__cart {
+            &__item {
+                .img-wrapper {
+                    height: 200px !important;
+                }
+                .img-wrapper img {
+                    height: 100% !important;
+                }
+
+                &__quantity-input {
+                    position: static;
+                    bottom: 10%;
+                    right: 20%;
+                    &__modify {
+                        width: 2rem;
+                    }
+                    &__screen {
+                        width: 3rem;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@include screen-x-small {
+    .furniture_checkout {
+        &__cart {
+            &__item {
+                .img-wrapper {
+                    height: 200px !important;
+                }
+                .img-wrapper img {
+                    height: 100% !important;
                 }
             }
         }

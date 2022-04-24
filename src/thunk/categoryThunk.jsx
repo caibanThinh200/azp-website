@@ -40,16 +40,16 @@ const getListAll = () => {
     }
 }
 
-const getList = () => {
+const getList = (filter) => {
     return async dispatch => {
-        dispatch(getListCategoryAction());
-        const result = await getListService();
+        dispatch(getListCategoryAction({disable_scroll: filter?.disable_scroll}));
+        const result = await getListService(filter);
         if (result.status === "FAILED") {
             console.log(result.error);
             message.error("Đã có lỗi xảy ra");
             dispatch(getListCategoryFailed());
         } else {
-            dispatch(getListCategorySuccess(result.result))
+            dispatch(getListCategorySuccess({result: result?.result, isFull: result?.isFull}))
         }
     }
 }

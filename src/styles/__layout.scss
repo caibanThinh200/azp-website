@@ -2,7 +2,7 @@
 
 * {
     // font-weight: 500;
-    font-family: 'Baloo Bhaijaan 2', cursive;
+    // font-family: 'Baloo Bhaijaan 2', cursive;
     // transition: all 0.25s ease-in-out;
 }
 
@@ -49,3 +49,42 @@ li {
     background: $primary_theme !important;
 }
 
+// .main_container {
+//     padding-top: 75px !important;
+// }
+
+@include screen-medium {
+    .main-container {
+        padding-top: 75px;
+    }
+}
+
+@include screen-small {
+    .main-container {
+        padding-top: 75px;
+    }
+}
+
+@include screen-x-small {
+    .main-container {
+        padding-top: 75px;
+    }
+}
+
+@include screen-lg {
+    .main-container {
+        padding-top: 50px;
+    }
+}
+
+@include screen-xl {
+    .main-container {
+        padding-top: 50px;
+    }
+}
+
+@include screen-xxl {
+    .main-container {
+        padding-top: 50px;
+    }
+}

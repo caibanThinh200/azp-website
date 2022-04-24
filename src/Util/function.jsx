@@ -8,7 +8,11 @@ export const generateDataToTree = (data, isRoot) => {
     return {
       key: item.key || 0,
       title: item.title || "",
-      childNode: (item.select && item.select.length > 0 && generateDataToTree(item.select, false)) || []
+      childNode:
+        (item.select &&
+          item.select.length > 0 &&
+          generateDataToTree(item.select, false)) ||
+        [],
     };
   });
   return newTree;
@@ -62,20 +66,23 @@ export function* generateChildrenNodes(node, r) {
   if (node) {
     if (node.children.length === 0) {
       r.push({
-        key: node.key || 0, title: node.title || ""
-      })
+        key: node.key || 0,
+        title: node.title || "",
+      });
       yield r;
-    }
-    else {
+    } else {
       for (const q of node.children) {
-        yield* generateChildrenNodes(q, [...r, { key: node.key || 0, title: node.title || "" }]);
+        yield* generateChildrenNodes(q, [
+          ...r,
+          { key: node.key || 0, title: node.title || "" },
+        ]);
       }
     }
   }
 }
 
 export function* endingAt(t, loc) {
-  let r
+  let r;
   for (r of generateChildrenNodes(t, [])) {
     if (r[r.length - 1].key === loc) {
       yield getNodePath(r);
@@ -91,45 +98,48 @@ export function lowercaseFirstLetter(string) {
   return string.charAt(0).toLowerCase() + string.slice(1);
 }
 
-export const getPathWithParams = (path = '', params = {}) => {
+export const getPathWithParams = (path = "", params = {}) => {
   if (params) {
-    Object.keys(params).forEach(p => {
+    Object.keys(params).forEach((p) => {
       const searchStrParam = `\/:${p}`;
       if (searchStrParam.length > 2) {
-        path = path.replace(searchStrParam, `\/${(params)[p]}`);
+        path = path.replace(searchStrParam, `\/${params[p]}`);
       } else {
-        path = `${path}${queryString.stringify(params).length > 0 ? "/" + queryString.stringify(params) : ""}`
+        path = `${path}${
+          queryString.stringify(params).length > 0
+            ? "/" + queryString.stringify(params)
+            : ""
+        }`;
       }
     });
   }
   return path;
 };
 
-
 export function withPayloadType(t) {
-  return ({ payload: t })
+  return { payload: t };
 }
-
 
 export const checkUndefined = (val) => {
   if (Array.isArray(val)) {
-    return val.length > 0 ? val : []
+    return val.length > 0 ? val : [];
   } else {
     return val || val !== undefined || val !== "" || val !== null ? val : "";
   }
 };
 
-export const checkSpecialCharacter = (value) => value.match(/^[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/);
+export const checkSpecialCharacter = (value) =>
+  value.match(/^[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/);
 
 export const formatInt = (numberParams, defaultNum = 0) => {
   return isNaN(numberParams) ? defaultNum : numberParams;
-}
+};
 
 export const getTitleTable = (model, arrayTitle, arrayItemRemove = []) => {
   let newArrayTitle = model.concat(arrayTitle);
   if (arrayItemRemove.length > 0) {
     let titleTable = newArrayTitle;
-    arrayItemRemove.map(i => {
+    arrayItemRemove.map((i) => {
       titleTable = titleTable.filter((ele) => ele !== i);
     });
     return titleTable;
@@ -140,34 +150,40 @@ export const getTitleTable = (model, arrayTitle, arrayItemRemove = []) => {
 
 export const generateColumnTable = (params) => {
   if (params.columnLabel && params.columnLabel.length > 0) {
-    const getLabels = params.columnLabel.map(key => {
-      const label = params.pageTag && get(TEXT_DEFINE.PAGE[params.pageTag.toUpperCase()], key);
+    const getLabels = params.columnLabel.map((key) => {
+      const label =
+        params.pageTag &&
+        get(TEXT_DEFINE.PAGE[params.pageTag.toUpperCase()], key);
       return { key, label };
     });
-    const tablelObject = getLabels.map(item => {
-      const customField = params.customComponents?.map(item => item.field);
+    const tablelObject = getLabels.map((item) => {
+      const customField = params.customComponents?.map((item) => item.field);
       if (customField?.includes(item.key)) {
         return {
           field: item.key,
           headerName: item.label,
-          ...((params.customComponents).find(column => column.field === item.key))
-        }
-      }
-      else {
+          ...params.customComponents.find(
+            (column) => column.field === item.key
+          ),
+        };
+      } else {
         return {
           field: item.key,
-          headerName: item.label
-        }
+          headerName: item.label,
+        };
       }
     });
     return tablelObject;
   }
-}
+};
 
 export function removeObjectEmptyValue(obj) {
-  return obj && Object.entries(obj)
-    .filter(([_, v]) => !!v)
-    .reduce((acc, [k, v]) => ({ ...acc, [k]: v }), {});
+  return (
+    obj &&
+    Object.entries(obj)
+      .filter(([_, v]) => !!v)
+      .reduce((acc, [k, v]) => ({ ...acc, [k]: v }), {})
+  );
 }
 
 export const customOptionSelect = (data, params) => {
@@ -177,17 +193,17 @@ export const customOptionSelect = (data, params) => {
       let object = {};
       params.map((i2, k) => {
         if (k === 0) {
-          object = { label: i[i2] }
+          object = { label: i[i2] };
         } else if (k === 1) {
-          object = { ...object, value: i[i2] }
+          object = { ...object, value: i[i2] };
         } else {
           object = { ...object, [i2]: i[i2] };
         }
       });
       if (Object.keys(object).length > 0) {
-        newData.push(object)
+        newData.push(object);
       }
-    })
+    });
   }
   return newData;
 };
@@ -198,7 +214,9 @@ export const formatMoney = (val) => {
   if (oldVal === "" || oldVal === 0) {
     num = 0;
   } else {
-    num = isNaN(parseInt(oldVal.replace(/,/g, '')).toString()) ? 0 : parseInt(oldVal.replace(/,/g, ''));
+    num = isNaN(parseInt(oldVal.replace(/,/g, "")).toString())
+      ? 0
+      : parseInt(oldVal.replace(/,/g, ""));
     // num = parseInt(oldVal.replace(/,/g, ''));
     num = num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
@@ -212,7 +230,9 @@ export const formatNumber = (val) => {
   if (oldVal === "" || oldVal === 0) {
     num = 0;
   } else {
-    num = isNaN(parseInt(oldVal.replace(/,/g, '')).toString()) ? 0 : parseInt(oldVal.replace(/,/g, ''));
+    num = isNaN(parseInt(oldVal.replace(/,/g, "")).toString())
+      ? 0
+      : parseInt(oldVal.replace(/,/g, ""));
     // num = parseInt(oldVal.replace(/,/g, ''));
     num = num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "");
   }
@@ -221,41 +241,54 @@ export const formatNumber = (val) => {
 };
 
 export function getThumbsUrl(thumb = {}) {
-  return (Object.keys(thumb)).length > 0 && [
-    {
-      ...thumb,
-      url: thumb?.url || ""
-    }
-  ] || [];
+  return (
+    (Object.keys(thumb).length > 0 && [
+      {
+        ...thumb,
+        url: thumb?.url || "",
+      },
+    ]) ||
+    []
+  );
 }
 
 export const checkLoadedImage = (url) => {
   let imageCheck = new Image();
   imageCheck.src = url + "!";
-  imageCheck.onerror = event => {
+  imageCheck.onerror = (event) => {
     event.target.src = INFO_DEFINE.DEFAULT_THUMB.preview;
-    return event.target.src
-  }
+    event.target.style = "object-fit: cover";
+    return event.target.src;
+  };
   // console.log(imageCheck.src, imageCheck.complete)
   // if(!imageCheck.complete) {
   //   imageCheck.src = INFO_DEFINE.DEFAULT_THUMB.preview;
   // }
   return imageCheck;
-}
+};
 
 export const onLoadErrorImage = (event) => {
   event.currentTarget.onerror = null;
+  event.currentTarget.style = "object-fit: cover";
   event.currentTarget.src = INFO_DEFINE.DEFAULT_THUMB.preview;
   // event.currentTarget.className = className;
-}
+};
 
 export function getSlug(slug) {
-  var words = slug.split('-');
+  var words = slug.split("-");
 
   for (var i = 0; i < words.length; i++) {
     var word = words[i];
     words[i] = word.charAt(0).toUpperCase() + word.slice(1);
   }
 
-  return words.join(' ');
+  return words.join(" ");
 }
+
+export const generateDuplicateArray = (array, key) => {
+  return array.filter(
+    (value, index, self) =>
+      index ===
+      self.findIndex((t) => t[key] === value[key])
+  );
+};

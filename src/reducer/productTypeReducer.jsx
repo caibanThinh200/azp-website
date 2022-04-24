@@ -12,7 +12,8 @@ const initialState = {
     total: 0,
     page_index: 1,
     page_size: 5,
-    page_count: 1
+    page_count: 1,
+    disable_scroll: false,
 }
 
 export default createReducer(initialState, reducer => {

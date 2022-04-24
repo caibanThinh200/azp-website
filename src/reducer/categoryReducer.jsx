@@ -28,19 +28,21 @@ const initialState = {
     total: 0,
     page_index: 1,
     page_size: 5,
-    page_count: 1
+    page_count: 1,
+    disable_scroll: false,
+    isFull: false
 }
 
 export default createReducer(initialState, reducer => {
     reducer
         .addCase(createCategoryAction, (state, action) => ({ ...state, isCategoryFetching: true }))
-        .addCase(getListCategoryAction, (state, action) => ({ ...state, isCategoryFetching: true }))
+        .addCase(getListCategoryAction, (state, action) => ({ ...state, isCategoryFetching: true, disable_scroll: action.payload?.disable_scroll }))
         .addCase(getListAllCategoryAction, (state, action) => ({ ...state, isCategoryFetching: true }))
         .addCase(getDetailCategoryAction, (state, action) => ({ ...state, isCategoryFetching: true }))
         .addCase(updateCategoryAction, (state, action) => ({ ...state, isCategoryFetching: true }))
         .addCase(createCategorySuccess, (state, action) => ({ ...state, isCategoryFetching: false }))
         .addCase(getListAllCategorySuccess, (state, action) => ({ ...state, isCategoryFetching: false, result: (action).payload }))
-        .addCase(getListCategorySuccess, (state, action) => ({ ...state, isCategoryFetching: false, result: (action).payload }))
+        .addCase(getListCategorySuccess, (state, action) => ({ ...state, isCategoryFetching: false, result: (action).payload?.result, isFull: action.payload?.isFull }))
         .addCase(getDetailCategorySuccess, (state, action) => ({ ...state, isCategoryFetching: false, item: action.payload }))
         .addCase(updateCategorySuccess, (state, action) => ({ ...state, isCategoryFetching: false }))
         .addCase(createCategoryFailed, initialState)

@@ -10,6 +10,7 @@ import uploadReducer from "./uploadReducer";
 import discountReducer from "./discountReducer";
 import orderReducer from "./orderReducer";
 import destinationReducer from "./destinationReducer";
+import shoppingCartReducer from "./shoppingCartReducer";
 
 export default combineReducers({
     authReducer,
@@ -22,5 +23,6 @@ export default combineReducers({
     uploadReducer,
     discountReducer,
     orderReducer,
-    destinationReducer
+    destinationReducer,
+    shoppingCartReducer
 })

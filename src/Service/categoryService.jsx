@@ -4,11 +4,12 @@ import ApiResponse from '../Mapping/ApiResponse';
 import Urls from '../Util/Urls';
 import currentConfig from '../Constant/env';
 
-export const getListService = () => {
+export const getListService = (filter) => {
     return new ApiService({
         baseURL: currentConfig.API_URL || "",
         endpoint: Urls.CATEGORY.getList,
-        parser: parseData
+        parser: parseData,
+        params: filter,
     }).get()
 }
 

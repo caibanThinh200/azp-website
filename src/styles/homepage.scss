@@ -22,7 +22,7 @@
         animation-delay: 1s;
         padding-left: 50px;
         padding-right: 50px;
-        margin-top: 125px;
+        margin-top: 50px;
         &__item {
             opacity: 0;
             border-radius: 10px;
@@ -31,7 +31,7 @@
             height: 200px;
             max-width: 90%;
             margin: 3px;
-            margin-left: 20px;
+            // margin-left: 20px;
             overflow: hidden;
             // padding-left: 10px;
             // padding-right: 10px;
@@ -244,6 +244,10 @@
                 top: 40%;
                 left: 0%;
             }
+            &__item {
+                width: 150px;
+                height: 150px;
+            }
         }
         &__product-type {
             padding: 0;
@@ -256,6 +260,8 @@
             }
             &__item {
                 // max-width: 120px;
+                width: 150px;
+                height: 150px;
                 text-align: center;
             }
         }
@@ -287,10 +293,12 @@
                 top: 40%;
             }
             &__item {
-                padding-left: 20px;
-                padding-right: 20px;
-                max-width: 75%;
+                // padding-left: 20px;
+                // padding-right: 20px;
+                // max-width: 75%;
                 text-align: center;
+                // width: 150px;
+                // height: 150px;
             }
         }
     }
