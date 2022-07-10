@@ -11,7 +11,7 @@ const initialState = {
   all: [],
   price: (JSON.parse(localStorage.getItem(INFO_DEFINE.KEY.cart)) || []).reduce(
     (prev, current) => {
-      return prev + current.price * current?.quantity;
+      return prev + current.discount_price * current?.quantity;
     },
     0
   ),
@@ -29,7 +29,7 @@ export default createReducer(initialState, (reducer) => {
         ...state,
         result: [...state.result, action.payload],
         price: [...state.result, action.payload].reduce((prev, current) => {
-          return prev + current.price * current?.quantity;
+          return prev + current.discount_price * current?.quantity;
         }, 0),
       };
     })
@@ -44,7 +44,7 @@ export default createReducer(initialState, (reducer) => {
       return {
         ...state,
         result: updateCart,
-        price: state.price - action.payload?.price * action.payload?.quantity,
+        price: state.discount_price - action.payload?.discount_price * action.payload?.quantity,
       };
     })
     .addCase(ActionType.updateQuantityAction, (state, action) => {
@@ -66,8 +66,8 @@ export default createReducer(initialState, (reducer) => {
         result: updateCart,
         price:
           action.payload?.type === "increment"
-            ? state.price + action.payload?.price * action.payload?.quantity
-            : state.price - action.payload?.price * action.payload?.quantity,
+            ? state.discount_price + action.payload?.discount_price * action.payload?.quantity
+            : state.discount_price - action.payload?.discount_price * action.payload?.quantity,
       };
     });
 });

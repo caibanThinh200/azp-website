@@ -21,7 +21,8 @@ const INFO_DEFINE = {
     },
     KEY: {
         userToken: "azp_utk",
-        cart: "azp_cart"
+        cart: "azp_cart",
+        recent: "azp_recent"
     },
     VAT_VALUE: 10
 }

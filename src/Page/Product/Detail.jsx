@@ -1,4 +1,4 @@
-import { Button, Divider, message, Result, Spin, Tabs } from "antd";
+import { Button, Divider, message, Result, Spin, Tabs, Tooltip } from "antd";
 import { cloneElement, useEffect, useState } from "react";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { useOutletContext, useParams } from "react-router-dom";
@@ -9,17 +9,20 @@ import Wrapper from "../../Component/Wrapper";
 import productThunk from "../../thunk/productThunk";
 import { getSlug, onLoadErrorImage } from "../../Util/function";
 import AttributeThunk from "../../thunk/attributeThunk";
-import { find, get } from "lodash";
+import { find, get, set } from "lodash";
 import parse from "html-react-parser";
 import Icon from "../../Component/Icon";
 import INFO_DEFINE from "../../Constant/infoDefine";
 import shoppingCartAction from "../../action/shoppingCartAction";
+import Cookies from "js-cookie";
 
 const ProductDetail = (props) => {
   const params = useParams();
   const dispatch = useDispatch();
   const shoppingCartState = useSelector((state) => state.shoppingCartReducer);
   const [quantity, setQuantity] = useState(1);
+  const [relatedProduct, setRelatedProduct] = useState([]);
+  const [recentProduct, setRecentProduct] = useState([]);
   const [product, setProduct] = useState({
     item: {},
     isFetching: false,
@@ -28,6 +31,7 @@ const ProductDetail = (props) => {
     isFetching: false,
     all: [],
   });
+  const [recent, setRecent] = useState([]);
   const routeProps = useOutletContext();
   const settings = {
     customPaging: function (i) {
@@ -87,10 +91,48 @@ const ProductDetail = (props) => {
   const relatedSettings = {
     // infinite: true,
     speed: 500,
-    slidesToShow: 3,
+    slidesToShow: relatedProduct.length > 5 ? 5 : relatedProduct.length,
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 3000,
+    variableWidth: true,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+          infinite: true,
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          infinite: true,
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          autoplay: true,
+          autoplaySpeed: 3000,
+        },
+      },
+    ],
+  };
+
+  const recentSettings = {
+    // infinite: true,
+    speed: 500,
+    slidesToShow: recentProduct.length > 5 ? 5 : recentProduct.length,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    variableWidth: true,
     responsive: [
       {
         breakpoint: 1024,
@@ -123,7 +165,48 @@ const ProductDetail = (props) => {
   useEffect(() => {
     props.getListAllAttribute();
   }, []);
-  console.log(shoppingCartState);
+
+  useEffect(() => {
+    setProduct({
+      isFetching: props.products.isProductFetching,
+      item: props.products.item,
+    });
+    if ((props.products?.item?.relatedProduct || []).length) {
+      setRelatedProduct(props.products?.item?.relatedProduct);
+    }
+    if ((props.products?.item?.recentProducts || []).length) {
+      setRecentProduct(props.products?.item?.recentProducts);
+    }
+  }, [props.products]);
+
+  useEffect(() => {
+    if (props.products.item?.id) {
+      const recents = Cookies.get(INFO_DEFINE.KEY.recent) || "";
+      if (!recents) {
+        setRecent([props.products.item?.id]);
+        Cookies.set(INFO_DEFINE.KEY.recent, props.products.item?.id || "", {
+          expires: 30,
+        });
+      } else {
+        let generateIds = Cookies.get(INFO_DEFINE.KEY.recent).split(",");
+        if (!generateIds.includes(props.products.item?.id)) {
+          generateIds.unshift(props.products.item?.id);
+          if (generateIds.length > 10) {
+            generateIds.pop();
+          }
+          const newIds = generateIds.join(",");
+          Cookies.set(INFO_DEFINE.KEY.recent, newIds, {
+            expires: 30,
+          });
+        }
+        const generateProduct = generateIds.map((item) => {
+          // props.getDetail(item)
+        });
+        setRecent(generateIds);
+      }
+    }
+  }, [props.products.item?.id]);
+
   useEffect(() => {
     if (params.slug) {
       let slug = params.slug;
@@ -137,13 +220,6 @@ const ProductDetail = (props) => {
       all: props.attributes.all,
     });
   }, [props.attributes]);
-
-  useEffect(() => {
-    setProduct({
-      isFetching: props.products.isProductFetching,
-      item: props.products.item,
-    });
-  }, [props.products]);
 
   const handleAddToCart = () => {
     let currentCart =
@@ -167,7 +243,7 @@ const ProductDetail = (props) => {
   };
 
   return (
-    <Wrapper className={"mt-5 mt-lg-3"}>
+    <Wrapper className={"mt-0 mt-lg-3"}>
       {!product.isFetching && Object.keys(product.item).length > 0 ? (
         <Wrapper className="row">
           <Wrapper className={"col-12 col-md-6"}>
@@ -248,8 +324,8 @@ const ProductDetail = (props) => {
                         &#xff0b;
                       </button>
                     </Wrapper>
-                    <Wrapper className={"mt-5 row"}>
-                      <Wrapper className={"col-12 col-xl-6 mb-5"}>
+                    <Wrapper className={"mt-5 mb-5 row"}>
+                      <Wrapper className={"col-12 col-xl-6 mb-2"}>
                         <button
                           onClick={handleAddToCart}
                           className="furniture_detail__info__checkout center-content pt-2 furniture_detail__info__checkout--add-to-cart"
@@ -318,14 +394,14 @@ const ProductDetail = (props) => {
           </Wrapper>
           <Wrapper className={"mt-100 text-center"}>
             <span className="h1 border-bottom">Sản phẩm liên quan</span>
-            <Wrapper
-              className={
-                "mt-4 pt-3 position-relative furniture_detail__related"
-              }
-            >
-              <Slider {...relatedSettings} className="ps-0">
-                {(product.item?.relatedProduct || []).length > 0 &&
-                  (product.item?.relatedProduct || []).map((item) => (
+            {(relatedProduct || []).length > 0 && (
+              <Wrapper
+                className={
+                  "mt-4 pt-3 position-relative furniture_detail__related"
+                }
+              >
+                <Slider {...relatedSettings} className="ps-0">
+                  {(relatedProduct || []).map((item) => (
                     <Wrapper
                       radius
                       shadow
@@ -335,11 +411,11 @@ const ProductDetail = (props) => {
                         routeProps.navigate(`/san-pham/${item?.slug}`)
                       }
                       className={
-                        "position-relative furniture_detail__related__item pb-5"
+                        "position-relative furniture_detail__related__item pb-5 w-100"
                       }
                     >
                       <img
-                        src={item.mainThumbs[0]?.url}
+                        src={item?.main_thumb[0]?.url}
                         onError={onLoadErrorImage}
                         className="furniture_product__item__thumb"
                       />
@@ -355,9 +431,11 @@ const ProductDetail = (props) => {
                             <p className="h6 fw-bold text-decoration-line-through">
                               {item.price} VND
                             </p>
-                            <p className="h4 fw-bold furniture_product__item__price--discount">
-                              {item.discountPrice} VND
-                            </p>
+                            <Tooltip title={`${item.discountPrice} VND`}>
+                              <p className="h4 fw-bold furniture_product__item__price--discount">
+                                {item.discountPrice} VND
+                              </p>
+                            </Tooltip>
                           </Fragment>
                         ) : (
                           <p className="h4 fw-bold furniture_product__item__price--discount">
@@ -370,9 +448,118 @@ const ProductDetail = (props) => {
                       </Wrapper>
                     </Wrapper>
                   ))}
-              </Slider>
-            </Wrapper>
+                  {/* {attribute.all.map((item) => (
+                    <Wrapper
+                      radius
+                      shadow
+                      bordered
+                      // key={item.id}
+                      // onClick={() =>
+                      //   routeProps.navigate(`/san-pham/${item?.slug}`)
+                      // }
+                      className={
+                        "position-relative furniture_detail__related__item pb-5"
+                      }
+                    >
+                      <img
+                        src={"asdasdasdasd"}
+                        onError={onLoadErrorImage}
+                        className="furniture_product__item__thumb"
+                      />
+                      <Wrapper className={"p-4 text-center"}>
+                        <p className="h6 word-wrap furniture_product__item__title mb-4">
+                          asdasd
+                        </p>
+                        <p className="word-wrap furniture_product__item__title">
+                          Mã sp: asdasd
+                        </p>
+                        {item.discountPrice ? (
+                          <Fragment>
+                            <p className="h6 fw-bold text-decoration-line-through">
+                              {item.price} VND
+                            </p>
+                            <Tooltip title={`${item.discountPrice} VND`}>
+                              <p className="h4 fw-bold furniture_product__item__price--discount">
+                                {item.discountPrice} VND
+                              </p>
+                            </Tooltip>
+                          </Fragment>
+                        ) : (
+                          <p className="h4 fw-bold furniture_product__item__price--discount">
+                            asdasdasd VND
+                          </p>
+                        )}
+                      </Wrapper>
+                      <Wrapper>
+                        <Button type="primary">Xem sản phẩm</Button>
+                      </Wrapper>
+                    </Wrapper>
+                  ))} */}
+                </Slider>
+              </Wrapper>
+            )}
           </Wrapper>
+          {(recentProduct || []).length > 0 && (
+            <Wrapper className={"mt-100 text-center"}>
+              <span className="h1 border-bottom">Sản phẩm đã xem qua</span>
+
+              <Wrapper
+                className={
+                  "mt-4 pt-3 position-relative furniture_detail__related"
+                }
+              >
+                <Slider {...recentSettings} className="ps-0">
+                  {(recentProduct || []).map((item) => (
+                    <Wrapper
+                      radius
+                      shadow
+                      bordered
+                      key={item.id}
+                      onClick={() =>
+                        routeProps.navigate(`/san-pham/${item?.slug}`)
+                      }
+                      className={
+                        "position-relative furniture_detail__related__item pb-5 w-100"
+                      }
+                    >
+                      <img
+                        src={item?.main_thumb[0]?.url}
+                        onError={onLoadErrorImage}
+                        className="furniture_product__item__thumb"
+                      />
+                      <Wrapper className={"p-4 text-center"}>
+                        <p className="h6 word-wrap furniture_product__item__title mb-4">
+                          {item.name}
+                        </p>
+                        <p className="word-wrap furniture_product__item__title">
+                          Mã sp: {item.code}
+                        </p>
+                        {item.discountPrice ? (
+                          <Fragment>
+                            <p className="h6 fw-bold text-decoration-line-through">
+                              {item.price} VND
+                            </p>
+                            <Tooltip title={`${item.discountPrice} VND`}>
+                              <p className="h4 fw-bold furniture_product__item__price--discount">
+                                {item.discountPrice} VND
+                              </p>
+                            </Tooltip>
+                          </Fragment>
+                        ) : (
+                          <p className="h4 fw-bold furniture_product__item__price--discount">
+                            {item.price} VND
+                          </p>
+                        )}
+                      </Wrapper>
+                      <Wrapper>
+                        <Button type="primary">Xem sản phẩm</Button>
+                      </Wrapper>
+                    </Wrapper>
+                  ))}
+                </Slider>
+              </Wrapper>
+            </Wrapper>
+          )}
         </Wrapper>
       ) : (
         <Result

@@ -23,7 +23,8 @@ export default class ProductResponse {
         this.product_type = data?.product_type || "";
         this.main_thumb = this.getFileData(data?.mainThumbs);
         this.sub_thumb = this.getFileData(data?.subThumbs);
-        this.relatedProduct = data?.relatedProduct || [];
+        this.relatedProduct = (data?.relatedProduct || []).map(item => new ProductResponse(item));
+        this.recentProducts = (data?.recentProducts || []).map(item => new ProductResponse(item));
         // this.mainThumb = data?.mainThumbs || [];
         // this.subThumb = data?.subThumbs || [];
         // this.main_thumb = data?.mainThumbs || [];

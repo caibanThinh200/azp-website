@@ -13,6 +13,7 @@ export default class ApiService {
         this.params = options.params || {};
         this.responseType = options.responseType || "json";
         this.parser = options.parser;
+        // this.axiosInstance?.defaults.withCredentials = true;
     }
 
     createServiceInstance(options) {
@@ -20,10 +21,22 @@ export default class ApiService {
             throw new Error("Reqiure Base URL");
         } else {
             (this.axiosInstance) = axios.create({
+                withCredentials: !options.credential ? options.credential : true,
                 baseURL: options.baseURL,
                 timeout: 20000,
+                // withCredentials: true,
                 responseType: this.responseType
             });
+            (this.axiosInstance).interceptors.response.use(
+                response => {
+                    // console.log(response)
+                    return response;
+                }, 
+                error => {
+                    // console.log(error)
+                    throw new Error(error)
+                }
+            );
         }
     }
 

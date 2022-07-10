@@ -56,7 +56,7 @@ const ShoppingCartPopup = (props) => {
                   Mã sp: <span className="fw-bold">{product?.code}</span>
                 </span>
                 <span>
-                  Giá: <span className="item-price">{product?.price} VND</span>
+                  Giá: <span className="item-price">{product?.discount_price} VND</span>
                 </span>
                 <span className="item-quantity float-end">
                   Số lượng: {product?.quantity}
@@ -240,7 +240,7 @@ const Header = (props) => {
           // style={{ alignItems: "flex-start" }}
           className="container-lg container-fluid h-100 p-1"
         >
-          <Link className="ms-5" to="/">
+          <Link className="ms-3" to="/">
             <img
               src="/define/271067783_343104124008134_3550196135801547111_n.png"
               className="furniture_navigation__logo float-start "
