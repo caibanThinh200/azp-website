@@ -19,9 +19,14 @@ import slugify from "slugify";
 import { bindActionCreators } from "redux";
 import CategoryThunk from "../thunk/categoryThunk";
 import { connect, useSelector } from "react-redux";
-import { onLoadErrorImage, removeObjectEmptyValue } from "../Util/function";
+import {
+  onLoadErrorImage,
+  removeObjectEmptyValue,
+  generateFacebookLink,
+} from "../Util/function";
 import productThunk from "../thunk/productThunk";
 import categoryThunk from "../thunk/categoryThunk";
+import LayoutThunk from "../thunk/layoutThunk";
 
 const ShoppingCartPopup = (props) => {
   return (
@@ -56,7 +61,10 @@ const ShoppingCartPopup = (props) => {
                   Mã sp: <span className="fw-bold">{product?.code}</span>
                 </span>
                 <span>
-                  Giá: <span className="item-price">{product?.discount_price} VND</span>
+                  Giá:{" "}
+                  <span className="item-price">
+                    {product?.discount_price} VND
+                  </span>
                 </span>
                 <span className="item-quantity float-end">
                   Số lượng: {product?.quantity}
@@ -172,6 +180,7 @@ const Header = (props) => {
     }),
     [shoppingCartVisible, setShoppingCartVisible] = useState(false),
     [productVisible, setProductVisible] = useState(false),
+    [layoutInfo, setLayoutInfo] = useState({}),
     location = useLocation(),
     cartState = useSelector((state) => state.shoppingCartReducer);
 
@@ -188,6 +197,10 @@ const Header = (props) => {
       item: props.categories?.item,
     });
   }, [props.categories]);
+
+  useEffect(() => {
+    setLayoutInfo(props.layout?.item);
+  }, [props.layout]);
 
   //   useEffect(() => {
   //     window.addEventListener("click", () => {
@@ -216,19 +229,20 @@ const Header = (props) => {
       >
         <span className="white float-end ms-3">
           <Icon type="phone" />
-          09183209182039
+          {layoutInfo?.phones?.length > 0 && layoutInfo.phones[0]}
         </span>
-        <span className="white float-end ms-3">
-          <Icon type="facebook" />
-          AZP.COM
-        </span>
-        <span className="white float-end ms-3">
-          <Icon type="instagram" />
-          AZP.SHOP
-        </span>
+        {layoutInfo?.socialMedia?.length > 0 &&
+          layoutInfo?.socialMedia?.map((social, index) => (
+            <span key={index} className="white float-end ms-3">
+              <Icon type={social?.type?.toLowerCase()} />
+              {social?.type?.toLowerCase() === "facebook"
+                ? generateFacebookLink(social?.info_url)
+                : social?.info_url}
+            </span>
+          ))}
         <span className="white float-end ms-3">
           <Icon type="home" />
-          211 Thoại Ngọc Hầu
+          {layoutInfo.stores?.length > 0 && layoutInfo.stores[0]?.address}
         </span>
       </Wrapper>
 
@@ -288,12 +302,12 @@ const Header = (props) => {
                   <span className="h6 fw-bold black">Sản phẩm</span>
                 </a>
               </Dropdown>
-              <Link to={"/"} className="d-inline nav-link me-3">
+              {/* <Link to={"/"} className="d-inline nav-link me-3">
                 <span className="h6 fw-bold black">Giới thiệu</span>
-              </Link>
-              <Link to={"/"} className="d-inline nav-link me-3">
+              </Link> */}
+              {/* <Link to={"/"} className="d-inline nav-link me-3">
                 <span className="h6 fw-bold black">Liên hệ</span>
-              </Link>
+              </Link> */}
               <Dropdown
                 arrow
                 // trigger={["click"]}
@@ -375,6 +389,7 @@ const Header = (props) => {
 const mapStateToProps = (state) => ({
   products: state.productReducer,
   categories: state.categoryReducer,
+  layout: state.layoutReducer,
   // productTypes: state.productTypeReducer
 });
 
@@ -383,6 +398,7 @@ const mapDispatchToProps = (dispatch) =>
     {
       getList: (filter) => productThunk.getList(filter),
       getListCategories: (filter) => categoryThunk.getList(filter),
+      getLayout: () => LayoutThunk.getDetail(),
       // getProductTypeDetail: id => ProductTypeThunk.getDetail(id)
     },
     dispatch

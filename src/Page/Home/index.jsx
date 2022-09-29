@@ -14,6 +14,7 @@ import { useOutletContext } from "react-router-dom";
 import { useTransition, animated } from "react-spring";
 import { animateScroll as scroll } from "react-scroll";
 import { find } from "lodash";
+import LayoutThunk from "../../thunk/layoutThunk";
 
 const settings = {
   infinite: false,
@@ -79,6 +80,7 @@ const HomePage = (props) => {
       },
     }),
     [cateSelected, setCateSelected] = useState(false),
+    [layoutInfo, setLayoutInfo] = useState({}),
     [limitCategory, setLimitCategory] = useState(0),
     [wrapperHeight, setWrapperHeight] = useState("auto"),
     ref = useRef([]),
@@ -93,7 +95,10 @@ const HomePage = (props) => {
     if (currentWidth >= 1400) {
       limit = 10;
     }
-    if (currentWidth < 1400 && currentWidth >= 952 || currentWidth < 746 && currentWidth >= 577) {
+    if (
+      (currentWidth < 1400 && currentWidth >= 952) ||
+      (currentWidth < 746 && currentWidth >= 577)
+    ) {
       limit = 8;
     }
     if (currentWidth < 952 && currentWidth >= 746) {
@@ -102,6 +107,16 @@ const HomePage = (props) => {
     setLimitCategory(limit);
     props.getListCategories({ limit });
   }, [Math.max(document.documentElement.clientWidth, window.innerWidth || 0)]);
+
+  // useEffect(() => {
+  //   props.getLayout();
+  // }, []);
+  
+
+  useEffect(() => {
+    setLayoutInfo(props.layout.item);
+  }, [props.layout]);
+
   useEffect(() => {
     setCategory({
       title: category.title,
@@ -294,7 +309,7 @@ const HomePage = (props) => {
               props.getListCategories({
                 limit: 8,
                 skip: category.result.length,
-                disable_scroll: true
+                disable_scroll: true,
               })
             }
             shape="round"
@@ -385,12 +400,14 @@ const HomePage = (props) => {
 
 const mapStateToProps = (state) => ({
   categories: state.categoryReducer,
+  layout: state.layoutReducer,
 });
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       getListCategories: (filter) => categoryThunk.getList(filter),
+      getLayout: () => LayoutThunk.getDetail(),
     },
     dispatch
   );

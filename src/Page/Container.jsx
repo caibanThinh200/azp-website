@@ -8,6 +8,7 @@ import LoadingOverlay from "react-loading-overlay";
 import { RotateLoader } from "react-spinners";
 import { bindActionCreators } from "redux";
 import categoryThunk from "../thunk/categoryThunk";
+import LayoutThunk from "../thunk/layoutThunk";
 
 const Container = (props) => {
   const [loading, setLoading] = useState(false);
@@ -19,13 +20,18 @@ const Container = (props) => {
   });
 
   useEffect(() => {
+    console.log(2222, props);
+    props?.getLayout();
+    console.log(333);
+  }, []);
+
+  useEffect(() => {
     const checkLoading =
         categories.isCategoryFetching ||
         productTypes.isProductTypeFetching ||
         products.isProductFetching ||
         attributes.isAccessoryFetching ||
         orders.isOrderFetching,
-
       disableScroll =
         categories.disable_scroll ||
         productTypes.disable_scroll ||
@@ -79,8 +85,12 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) =>
-  bindActionCreators({
-    getListCategory: () => categoryThunk.getListAll(),
-  });
+  bindActionCreators(
+    {
+      getListCategory: () => categoryThunk.getListAll(),
+      getLayout: () => LayoutThunk.getDetail(),
+    },
+    dispatch
+  );
 
 export default connect(mapStateToProps, mapDispatchToProps)(Container);

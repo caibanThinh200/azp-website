@@ -11,6 +11,7 @@ import discountReducer from "./discountReducer";
 import orderReducer from "./orderReducer";
 import destinationReducer from "./destinationReducer";
 import shoppingCartReducer from "./shoppingCartReducer";
+import layoutReducer from "./layoutReducer";
 
 export default combineReducers({
     authReducer,
@@ -24,5 +25,6 @@ export default combineReducers({
     discountReducer,
     orderReducer,
     destinationReducer,
-    shoppingCartReducer
+    shoppingCartReducer,
+    layoutReducer
 })

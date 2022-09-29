@@ -34,6 +34,13 @@ export default {
         getDetail: "/attribute/detail/:id",
         update: "/attribute/detail/:id"
     },
+    LAYOUT: {  
+        getList: "/layout",
+        all: "/layout/all",
+        create: "/layout",
+        getDetail: "/layout/detail",
+        update: "/layout/detail"
+    },
     DISCOUNT: {  
         getList: "/discount",
         all: "/discount/all",

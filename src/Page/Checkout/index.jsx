@@ -27,6 +27,7 @@ import { getListProvinceService } from "../../Service/destinationService";
 import DestinationThunk from "../../thunk/destinationThunk";
 import { find, get } from "lodash";
 import shoppingCartAction from "../../action/shoppingCartAction";
+import LIST_CTY_DISTRICT from "../../Constant/City.json";
 
 const Checkout = (props) => {
   const [cartList, setCartList] = useState(
@@ -49,6 +50,7 @@ const Checkout = (props) => {
         ward: [],
       },
     }),
+    [form] = Form.useForm(),
     dispatch = useDispatch(),
     shoppingCartState = useSelector((state) => state.shoppingCartReducer),
     routeProps = useOutletContext();
@@ -64,7 +66,7 @@ const Checkout = (props) => {
   }, [props.orders]);
 
   useEffect(() => {
-    props.getListProvince();
+    // props.getListProvince();
   }, []);
 
   useEffect(() => {
@@ -81,12 +83,12 @@ const Checkout = (props) => {
         ward: props.destinations?.isFetching?.ward,
       },
       result: {
-        province: props.destinations?.result?.province,
-        district: props.destinations?.result?.district,
-        ward: props.destinations?.result?.ward,
+        province: LIST_CTY_DISTRICT,
+        // district: props.destinations?.result?.district,
+        // ward: props.destinations?.result?.ward,
       },
     });
-  }, [props.destinations]);
+  }, [props.destinations, LIST_CTY_DISTRICT]);
 
   const removeItem = (item) => {
     // const newCart = cartList.filter(cart => cart?.id !== item?.id);
@@ -190,6 +192,34 @@ const Checkout = (props) => {
   const handlePayment = (status) => {
     let requestParams = { ...order.item, status };
     props.payment(requestParams?.id, requestParams, routeProps.navigate);
+  };
+  console.log(destination)
+  const handleFieldChange = (fields) => {
+    if (fields[0].name[0] === "province") {
+      form.resetFields(["district", "ward"])
+      setDestination({
+        ...destination,
+        result: {
+          ...destination.result,
+          district: get(
+            find(LIST_CTY_DISTRICT, { code: fields[0]?.value }),
+            "districts"
+          ),
+        },
+      });
+    }
+    if (fields[0].name[0] === "district") {
+      setDestination({
+        ...destination,
+        result: {
+          ...destination.result,
+          ward: get(
+            find(destination.result.district, { code: fields[0]?.value }),
+            "wards"
+          ),
+        },
+      });
+    }
   };
 
   return (
@@ -340,10 +370,12 @@ const Checkout = (props) => {
               bordered
             >
               <Form
+                form={form}
                 onFinish={handleCheckout}
                 layout="vertical"
                 labelAlign="left"
                 // wrapperCol={{ span: 24 }}
+                onFieldsChange={handleFieldChange}
                 // size="large"
                 className="row w-100"
               >
@@ -361,13 +393,14 @@ const Checkout = (props) => {
                     rules={[
                       { required: true, message: "Vui lòng nhập SDT" },
                       {
-                        pattern: /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/,
+                        pattern:
+                          /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/,
                         message: "SDT không đúng định dạng",
                       },
-                    //   {
-                    //     pattern: /^[\d]{0,50}$/,
-                    //     message: "SDT không đúng định dạng",
-                    //   },
+                      //   {
+                      //     pattern: /^[\d]{0,50}$/,
+                      //     message: "SDT không đúng định dạng",
+                      //   },
                       //   { type: "phone", message: "SDT không đúng định dạng" },
                     ]}
                     name="phone"
@@ -408,7 +441,7 @@ const Checkout = (props) => {
                   >
                     <Select
                       loading={destination.isFetching.province}
-                      onSelect={(value) => getDestination(value, 1)}
+                      // onSelect={(value) => getDestination(value, 1)}
                       options={customOptionSelect(destination.result.province, [
                         "name",
                         "code",
@@ -423,7 +456,7 @@ const Checkout = (props) => {
                   >
                     <Select
                       loading={destination.isFetching.district}
-                      onSelect={(value) => getDestination(value, 2)}
+                      // onSelect={(value) => getDestination(value, 2)}
                       options={customOptionSelect(destination.result.district, [
                         "name",
                         "code",

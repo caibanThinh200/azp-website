@@ -292,3 +292,13 @@ export const generateDuplicateArray = (array, key) => {
       self.findIndex((t) => t[key] === value[key])
   );
 };
+
+export const generateFacebookLink = (url) => {
+  const facebookDomain = `${'https' || 'http'}://www.facebook.com/`;
+  return url.includes(facebookDomain) ? url.replace(facebookDomain, '') : url;
+};
+
+export const undoFacebookLink = (url) => {
+  const facebookDomain = `${'https' || 'http'}://www.facebook.com/`;
+  return !url.includes(facebookDomain) ? `${facebookDomain}${url}` : url;
+};
